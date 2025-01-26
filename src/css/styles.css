@@ -1,18 +1,178 @@
-/**
-  |============================
-  | include css partials with
-  | default @import url()
-  |============================
-*/
-/* Common styles */
-@import url('./reset.css');
-@import url('./base.css');
-@import url('./container.css');
-@import url('./animations.css');
+@import url('./loader.css');
+@import 'izitoast/dist/css/iziToast.min.css';
+@import 'simplelightbox/dist/simple-lightbox.min.css';
 
-/* Sections style */
-@import url('./header.css');
-@import url('./vite-promo.css');
-@import url('./badges.css');
-@import url('./back-link.css');
-@import url('./footer.css');
+body {
+  background-color: #70a7afc0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+/* button {
+  cursor: pointer;
+} */
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.gallery-card {
+  width: calc((100% - 45px) / 3);
+}
+.gallery-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border: solid 1px #09017cad;
+  border-radius: 8px;
+  background-color: #5d676e38;
+}
+.gallery-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+  padding: 5px;
+  margin-top: 2px;
+  border: solid 1px #09017cad;
+  border-radius: 6px;
+  background-color: #5d676e38;
+}
+.gallery-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.gallery-title {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: rgb(43, 70, 71);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.gallery-count {
+  font-size: 19px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #1e226b;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  background-color: #d8eaf8;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  width: 100%;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+}
+.container {
+  width: 1600px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.form-search {
+  border-radius: 6px;
+  padding: 5px;
+  width: 600px;
+  display: flex;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+/* .form-search :hover {
+  background-color: #f5f3ed;
+  color: rgb(0, 0, 0);
+  font-size: 19px;
+ text-transform: uppercase; 
+ } */
+.input-search {
+  background-color: #f5f3ed;
+  font-size: 20px;
+  flex-grow: 1;
+  height: 40px;
+  padding-left: 15px;
+  border: 1px solid #303030;
+  border-radius: 6px;
+}
+
+.btn-search {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: cadetblue;
+  color: rgb(13, 4, 66);
+  border-radius: 6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.btn-search :hover {
+  background-color: rgb(0, 251, 255);
+  color: rgb(255, 255, 255);
+}
+
+.load-more-btn {
+  font-size: 20px;
+  padding: 10px 30px;
+  background-color: cadetblue;
+  color: rgb(13, 4, 66);
+  border-radius: 6px;
+  /* text-transform: uppercase; */
+  cursor: pointer;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 30px;
+
+  display: flex;
+}
+.load-more-btn:hover {
+  background-color: rgb(70, 116, 117);
+  color: rgb(255, 255, 255);
+}
+.load-more-btn.is-hidden {
+  display: none;
+}
