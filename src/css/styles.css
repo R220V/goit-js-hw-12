@@ -30,10 +30,6 @@ a {
   text-decoration: none;
 }
 
-/* button {
-  cursor: pointer;
-} */
-
 img {
   display: block;
   max-width: 100%;
@@ -104,7 +100,7 @@ img {
   width: 100%;
 }
 .card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 .container {
@@ -123,41 +119,40 @@ img {
   margin-bottom: 40px;
 }
 
-/* .form-search :hover {
-  background-color: #f5f3ed;
-  color: rgb(0, 0, 0);
-  font-size: 19px;
- text-transform: uppercase; 
- } */
+.form-search :hover {
+  color: rgb(48, 47, 47);
+  border-color: #ebe9e9;
+}
 .input-search {
   background-color: #f5f3ed;
-  font-size: 20px;
+  font-size: 18px;
   flex-grow: 1;
   height: 40px;
   padding-left: 15px;
-  border: 1px solid #303030;
+  border: 1px solid #000000;
   border-radius: 6px;
 }
-
-.btn-search {
-  font-size: 18px;
-  padding: 10px 20px;
-  background-color: cadetblue;
-  color: rgb(13, 4, 66);
+button {
+  font-size: 20px;
+  padding: 10px 30px;
+  background-color: rgb(92, 150, 151);
+  color: rgb(250, 249, 252);
   border-radius: 6px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   cursor: pointer;
   margin-left: 5px;
+  transition: background-color 0.4s ease, transform 0.8s ease;
 }
-.btn-search :hover {
-  background-color: rgb(0, 251, 255);
-  color: rgb(255, 255, 255);
+button:hover {
+  background-color: rgb(100, 170, 170);
+  transform: translateX(+3px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.445);
 }
 
 .load-more-btn {
   font-size: 20px;
   padding: 10px 30px;
-  background-color: cadetblue;
+  background-color: rgb(104, 173, 175);
   color: rgb(13, 4, 66);
   border-radius: 6px;
   /* text-transform: uppercase; */
@@ -166,13 +161,14 @@ img {
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 30px;
-
   display: flex;
+  transition: background-color 0.4s ease, transform 0.8s ease;
 }
 .load-more-btn:hover {
-  background-color: rgb(70, 116, 117);
+  background-color: rgb(87, 144, 145);
   color: rgb(255, 255, 255);
+  transform: translateY(-3px);
 }
-.load-more-btn.is-hidden {
+.load-more-btn.hidden {
   display: none;
 }

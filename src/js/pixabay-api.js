@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchPhotosByQuery = searchedQuery => {
+export const fetchPhotosByQuery = (searchedQuery, currentPage) => {
   const axiosOptions = {
     params: {
       q: searchedQuery,
@@ -8,19 +8,12 @@ export const fetchPhotosByQuery = searchedQuery => {
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: 'true',
-      page: 1,
-      per_page: '15',
+      page: currentPage,
+      per_page: 15,
     },
   };
   return axios.get(`https://pixabay.com/api/`, axiosOptions);
-  // .then(response => {
-  //   if (!response.ok) {
-  //     throw new Error(response.status);
-  //   }
-  //   return response.json();
-  // });
 };
-
 // ============================================
 // export const fetchPhotosByQuery = searchedQuery => {
 //   const searchParams = new URLSearchParams({
