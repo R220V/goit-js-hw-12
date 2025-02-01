@@ -25,10 +25,13 @@ let searchedQuery = '';
 
 //ф-ія викликається при сабміті форми
 const onSearchFormSubmit = async event => {
+  // Запобігаємо перезавантаженню сторінки
+  event.preventDefault();
+
   try {
-    // Запобігаємо перезавантаженню сторінки
-    event.preventDefault();
-    loader.style.display = 'none';
+    //сховаємо кнопку Load More
+    // loadMoreBtn.classList.add('hidden');
+    // loader.style.display = 'none';
 
     //зчитуємо значення з інпута, видаляючи пробіли
     searchedQuery = event.currentTarget.elements.user_query.value.trim('');
@@ -45,10 +48,10 @@ const onSearchFormSubmit = async event => {
       return;
     }
     // відкриємо 1 сторінку при кожному пошуку
-    page = 1;
+    // page = 1;
 
     //сховаємо кнопку Load More
-    loadMoreBtn.classList.add('hidden');
+    // loadMoreBtn.classList.add('hidden');
     // //Видалимо клас is-hidden для показу індикатора завантаження
     // loader.classList.remove('is-hidden');
 
@@ -71,23 +74,22 @@ const onSearchFormSubmit = async event => {
       return;
     }
     // якщо на сервері > 1 групи зображень
-    if (data.totalHits > 1) {
-      loadMoreBtn.classList.remove('hidden');
-      // слухаємо подію клік на кнопці, якщо >1 групи зображень
-      loadMoreBtn.addEventListener('click'.onLoadMoreBtnClick);
+    // if (data.totalHits > 1) {
+    //   loadMoreBtn.classList.remove('hidden');
+    // слухаємо подію клік на кнопці, якщо >1 групи зображень
+    // loadMoreBtn.addEventListener('click'.onLoadMoreBtnClick);
 
-      //генеруємо розмітку(якщо є зображення, формуємо рядок з розміткою)
-      const galleryTemplate = data.hits
-        .map(el => createGalleryCardTemplate(el))
-        .join('');
-      //відмалювали картки в галереї
-      galleryEl.innerHTML = galleryTemplate;
-      // //Покажемо кнопку load-more --приберемо клас hidden
-      loadMoreBtn.classList.remove('hidden');
+    //генеруємо розмітку(якщо є зображення, формуємо рядок з розміткою)
+    const galleryTemplate = data.hits
+      .map(el => createGalleryCardTemplate(el))
+      .join('');
+    //відмалювали картки в галереї
+    galleryEl.innerHTML = galleryTemplate;
+    //Покажемо кнопку load-more --приберемо клас hidden
+    loadMoreBtn.classList.remove('hidden');
 
-      // //слухаємо подію клік на кнопці
-      loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
-    }
+    //слухаємо подію клік на кнопці
+    loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
   } catch (err) {
     console.log(err);
   }
@@ -95,27 +97,28 @@ const onSearchFormSubmit = async event => {
 // Додаємо обробник події на форму пошуку
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
-//опишемо ф-ію обробнику кліку
+// опишемо ф-ію обробнику кліку
 const onLoadMoreBtnClick = async event => {
+  console.log('object');
   try {
     page++;
     // робимо запит по ключовому слову searchedQuery
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
-
+    console.log(data);
     //генеруємо розмітку(якщо є зображення, формуємо рядок з розміткою)
     const galleryTemplate = data.hits
       .map(el => createGalleryCardTemplate(el))
       .join('');
-
+    //
+    console.log(galleryTemplate);
     //додаємо нові зображення в кінець нашого списку
     galleryEl.insertAdjacentHTML('beforeend', galleryTemplate);
-    //коли настає кінець колекції
-    if (page === data.totalHits) {
-      // ховаэмо кнопку
-      loadMoreBtnEl.classList.add('is-hidden');
-      //припиняємо прослуховування на кнопці
-      loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
-    }
+    //     //коли настає кінець колекції
+    //     if (page === data.totalHits) {
+    //       // ховаэмо кнопку
+    //       loadMoreBtnEl.classList.add('is-hidden');
+    //       //припиняємо прослуховування на кнопці
+    //       loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
   } catch (err) {
     console.log(err);
   }
