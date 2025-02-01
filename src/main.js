@@ -23,14 +23,12 @@ let page = 1;
 //зберігає ключове слово, яке ввів користувач у формі.
 let searchedQuery = '';
 
-//загальна кількість доступних зображень для заданого ключового слова (повертається API).
-let totalHits = 0;
-
 //ф-ія викликається при сабміті форми
 const onSearchFormSubmit = async event => {
   try {
     // Запобігаємо перезавантаженню сторінки
     event.preventDefault();
+    loader.style.display = 'none';
 
     //зчитуємо значення з інпута, видаляючи пробіли
     searchedQuery = event.currentTarget.elements.user_query.value.trim('');
@@ -46,12 +44,14 @@ const onSearchFormSubmit = async event => {
       });
       return;
     }
-    //відкриємо 1 сторінку при кожному пошуку
+    // відкриємо 1 сторінку при кожному пошуку
     page = 1;
+
     //сховаємо кнопку Load More
     loadMoreBtn.classList.add('hidden');
-    //Видалимо клас is-hidden для показу індикатора завантаження
-    loader.classList.remove('is-hidden');
+    // //Видалимо клас is-hidden для показу індикатора завантаження
+    // loader.classList.remove('is-hidden');
+
     //Зробили запит поключовому слову searchedQuery
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
 
@@ -66,100 +66,94 @@ const onSearchFormSubmit = async event => {
         messageSize: '20',
         message: 'Sorry, there are no images. Please try again!',
       });
-
       galleryEl.innerHTML = ''; //почистили галерею
       searchFormEl.reset(); //почистили імпут
-
       return;
     }
-
-    galleryEl.insertAdjacentHTML(
-      'beforeend',
-      createGalleryCardTemplate(data.hits)
-    );
-
-    if (data.total.hits > page * 15) {
+    // якщо на сервері > 1 групи зображень
+    if (data.totalHits > 1) {
       loadMoreBtn.classList.remove('hidden');
-      // loadMoreBtn.addEventListener('click'.onLoadMoreBtnClick);
+      // слухаємо подію клік на кнопці, якщо >1 групи зображень
+      loadMoreBtn.addEventListener('click'.onLoadMoreBtnClick);
+
+      //генеруємо розмітку(якщо є зображення, формуємо рядок з розміткою)
+      const galleryTemplate = data.hits
+        .map(el => createGalleryCardTemplate(el))
+        .join('');
+      //відмалювали картки в галереї
+      galleryEl.innerHTML = galleryTemplate;
+      // //Покажемо кнопку load-more --приберемо клас hidden
+      loadMoreBtn.classList.remove('hidden');
+
+      // //слухаємо подію клік на кнопці
+      loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
     }
-    gallerySimpleLightbox.refresh();
+  } catch (err) {
+    console.log(err);
+  }
+};
+// Додаємо обробник події на форму пошуку
+searchFormEl.addEventListener('submit', onSearchFormSubmit);
+
+//опишемо ф-ію обробнику кліку
+const onLoadMoreBtnClick = async event => {
+  try {
+    page++;
+    // робимо запит по ключовому слову searchedQuery
+    const { data } = await fetchPhotosByQuery(searchedQuery, page);
 
     //генеруємо розмітку(якщо є зображення, формуємо рядок з розміткою)
     const galleryTemplate = data.hits
       .map(el => createGalleryCardTemplate(el))
       .join('');
-    //ховаємо індикатор завантаження
-    loader.classList.add('is-hidden');
 
-    //відмальовуємо зображення на сторінці
-    galleryEl.innerHTML = galleryTemplate;
-
-    //Покажемо кнопку load-more --приберемо клас hidden
-    loadMoreBtn.classList.remove('hidden');
-
-    //слухаємо подію клік на кнопці
-    loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
-
-    //ховаємо індикатор завантаження
-    loader.classList.add('is-hidden');
-
-    //оновлюємо галерею SimpleLightbox
-    gallerySimpleLightbox.refresh();
+    //додаємо нові зображення в кінець нашого списку
+    galleryEl.insertAdjacentHTML('beforeend', galleryTemplate);
+    //коли настає кінець колекції
+    if (page === data.totalHits) {
+      // ховаэмо кнопку
+      loadMoreBtnEl.classList.add('is-hidden');
+      //припиняємо прослуховування на кнопці
+      loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
+    }
   } catch (err) {
     console.log(err);
-  } finally {
-    loader.classList.remove('is-hidden');
   }
 };
 
-//очистимо форму після завершення запиту
-searchFormEl.reset();
+// iziToast.err({
+//   title: 'Error',
+//   position: 'topRight',
+//   message: 'The image you requested could not be loaded. Please try again later.',
 
-// Додаємо обробник події на форму пошуку
-searchFormEl.addEventListener('submit', onSearchFormSubmit);
+// });
 
-//опишемо ф-ію
-const onLoadMoreBtnClick = async () => {
-  const { data } = await fetchPhotosByQuery(searchedQuery, page);
-  try {
-    page++;
-    const { data } = await fetchPhotosByQuery(query, page);
-    galleryEl.insertAdjacentHTML(
-      'beforeend',
-      createGalleryCardTemplate(data.hits)
-    );
+//       const galleryTemplate = data.results
+//         .map(el => createGalleryCardTemplate(el))
+//         .join('');
 
-    //Перевірка, якщо користувач дійшов до кінця колекції, ховай кнопку
-    if (page * 15 >= data.totalHits || data.hits.length === 0) {
-      iziToast.show({
-        title: '',
-        message: "We're sorry, but you've reached the end of search results.",
-        position: 'topRight',
-        color: 'blue',
-      });
-      loadMoreBtn.classList.add('hidden');
-      loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
-      return;
-    }
-    const smoothScroll = document.querySelector('.gallery-item');
-    if (smoothScroll) {
-      const cardHeight = smoothScroll.getBoundingClientRect().height;
-      window.scrollBy({
-        top: cardHeight * 2,
-        behavior: 'smooth',
-      });
-    }
-  } catch (error) {
-    iziToast.error({
-      title: 'Error',
-      position: 'topRight',
-      message:
-        'The image you requested could not be loaded. Please try again later.',
-    });
-  }
-};
+//
+//
 
-loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+//         iziToast.info({
+//           title: 'Info',
+//           position: 'topRight',
+//           message: "There are no more images matching your request.",
+//         });
+//
+
+//
+//       }
+//     }
+//     const smoothScroll = document.querySelector('.gallery-item');
+//     if(smoothScroll) {
+//      const cardHeight = smoothScroll.getBoundingClientRect().height;
+//       window.scrollBy({
+//         top: cardHeight * 2,
+//         behavior: 'smooth',
+//       });
+//     }
+
 // ===================================================================
 
 //--------------------------------------------------------------------------------------------------------------
