@@ -1,41 +1,27 @@
-export function createGalleryCardTemplate(imgInfo) {
-  return imgInfo
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => {
-        return `<li class="gallery-item">
-  <article class="card">
-    <a class="gallery-link" href="${largeImageURL}"
-      ><img class="gallery-img" src="${webformatURL}" alt="${tags}"
-    /></a>
-    <ul class="info-list">
-      <li class="info-item">
-        <h2 class="info-subtitle">Likes:</h2>
-        <p class="info-text">${likes}</p>
-      </li>
-      <li class="info-item">
-        <h2 class="info-subtitle">Views:</h2>
-        <p class="info-text">${views}</p>
-      </li>
-      <li class="info-item">
-        <h2 class="info-subtitle">Comments:</h2>
-        <p class="info-text">${comments}</p>
-      </li>
-      <li class="info-item">
-        <h2 class="info-subtitle">Downloads:</h2>
-        <p class="info-text">${downloads}</p>
-      </li>
-    </ul>
-  </article>
-</li>`;
-      }
-    )
-    .join('');
-}
+export const createGalleryCardTemplate = imgInfo => {
+  return `<li class="gallery-card">
+              <section class="card">
+              <a class="gallery-link" href="${imgInfo.largeImageURL}" target="_blank" rel="noopener noreferrer">
+                <img class="gallery-img" src="${imgInfo.webformatURL}" alt="${imgInfo.tags}" />
+              </a>
+              <div class="gallery-container">
+                <div class="gallery-item">
+                  <p class="gallery-title">Likes</p>
+                  <p class="gallery-count">${imgInfo.likes}</p>
+                </div>
+                <div class="gallery-item">
+                  <p class="gallery-title">Views</p>
+                  <p class="gallery-count">${imgInfo.views}</p>
+                </div>
+                <div class="gallery-item">
+                  <p class="gallery-title">Comments</p>
+                  <p class="gallery-count">${imgInfo.comments}</p>
+                </div>
+                <div class="gallery-item">
+                  <p class="gallery-title">Downloads</p>
+                  <p class="gallery-count">${imgInfo.downloads}</p>
+                </div>
+              </div>
+            </section>
+          </li>`;
+};

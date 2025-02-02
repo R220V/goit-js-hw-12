@@ -42,7 +42,7 @@ img {
   flex-wrap: wrap;
   gap: 20px;
 }
-.gallery-item {
+.gallery-card {
   width: calc((100% - 45px) / 3);
 }
 .gallery-img {
@@ -53,7 +53,7 @@ img {
   border-radius: 8px;
   background-color: #5d676e38;
 }
-.info-list {
+.gallery-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,13 +64,13 @@ img {
   border-radius: 6px;
   background-color: #5d676e38;
 }
-.info-item {
+.gallery-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
-.info-subtitle {
+.gallery-title {
   font-weight: 400;
   font-size: 19px;
   line-height: 1.5;
@@ -81,7 +81,7 @@ img {
   align-items: center;
   margin-top: 8px;
 }
-.info-text {
+.gallery-count {
   font-size: 19px;
   line-height: 1.5;
   letter-spacing: 0.04em;
@@ -95,14 +95,13 @@ img {
   display: flex;
   flex-direction: column;
   background-color: #d8eaf8;
-  transition: transform 400ms ease-out;
-  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   width: 100%;
 }
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 .container {
   width: 1600px;
@@ -117,20 +116,20 @@ img {
   width: 600px;
   display: flex;
   margin: 0 auto;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
-.form-input :hover {
+.form-search :hover {
   color: rgb(48, 47, 47);
   border-color: #ebe9e9;
 }
-.form-input {
+.input-search {
   background-color: #f5f3ed;
   font-size: 18px;
   flex-grow: 1;
-  height: 44px;
+  height: 40px;
   padding-left: 15px;
-  border: 2px solid #017272;
+  border: 1px solid #000000;
   border-radius: 6px;
 }
 button {
@@ -139,6 +138,7 @@ button {
   background-color: rgb(92, 150, 151);
   color: rgb(250, 249, 252);
   border-radius: 6px;
+  /* text-transform: uppercase; */
   cursor: pointer;
   margin-left: 5px;
   transition: background-color 0.4s ease, transform 0.8s ease;
@@ -149,12 +149,13 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.445);
 }
 
-.button-load {
+.load-more-btn {
   font-size: 20px;
   padding: 10px 30px;
   background-color: rgb(104, 173, 175);
   color: rgb(13, 4, 66);
   border-radius: 6px;
+  /* text-transform: uppercase; */
   cursor: pointer;
   margin-top: 30px;
   margin-right: auto;
@@ -163,12 +164,11 @@ button:hover {
   display: flex;
   transition: background-color 0.4s ease, transform 0.8s ease;
 }
-.button-load:hover {
+.load-more-btn:hover {
   background-color: rgb(87, 144, 145);
   color: rgb(255, 255, 255);
   transform: translateY(-3px);
 }
-
-.is-hidden {
+.load-more-btn.hidden {
   display: none;
 }

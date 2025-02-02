@@ -12,22 +12,22 @@
     <main>
       <section class="section-gallery">
         <div class="container">
-          <form class="form-search">
+          <form class="form-search js-form-search">
             <input
-              class="form-input"
+              class="input-search"
               type="text"
-              name="query"
+              name="user_query"
               placeholder="Search images..."
               required
             />
-            <button class="form-btn" type="submit">Search</button>
+            <button class="btn-search" type="submit">Search</button>
           </form>
 
           <div class="loader-container">
-            <span class="loader"></span>
+            <span class="loader is-hidden"></span>
           </div>
-          <ul class="gallery"></ul>
-          <button class="button-load hidden" type="button">Load More</button>
+          <ul class="gallery js-gallery"></ul>
+          <button class="load-more-btn hidden" type="button">Load More</button>
         </div>
       </section>
     </main>
