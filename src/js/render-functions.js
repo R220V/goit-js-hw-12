@@ -10,7 +10,7 @@ export function createGalleryCardTemplate(imgInfo) {
         comments,
         downloads,
       }) => {
-        `<li class="gallery-card">
+        return `<li class="gallery-card">
               <section class="card">
               <a class="gallery-link" href="${largeImageURL}" target="_blank" rel="noopener noreferrer">
                 <img class="gallery-img" src="${webformatURL}" alt="${tags}" />

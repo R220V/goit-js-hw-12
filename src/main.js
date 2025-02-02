@@ -13,6 +13,7 @@ const loadMoreBtn = document.querySelector('.load-more-btn');
 //Ініціалізація SimpleLightbox- створення модального вікна,
 //(зображення відкривається у великому розмірі).
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
   captionsData: 'alt',
   captionDelay: 500,
 });
@@ -24,15 +25,10 @@ loader.style.display = 'none'; //сховаємо лоадер
 loadMoreBtn.classList.add('is-hidden'); //сховаємо кнопку Load More
 
 //ф-ія викликається при сабміті форми
-const onSearchFormSubmit = async event => {
+const searchFormImg = async event => {
+  event.preventDefault(); // Запобігаємо перезавантаженню сторінки
   try {
-    event.preventDefault(); // Запобігаємо перезавантаженню сторінки
-
-    //сховаємо кнопку Load More
-    // loadMoreBtn.classList.add('hidden');
-    // loader.style.display = 'none';
-
-    searchedQuery = event.target.query.value.trim(); //зчитуємо значення з інпута, видаляючи пробіли
+    searchedQuery = event.target.elements.query.value.trim(); //зчитуємо значення з інпута, видаляючи пробіли
     galleryEl.innerHTML = ''; //почистили галерею
 
     //перевірка, чи інпут не порожній
@@ -47,21 +43,18 @@ const onSearchFormSubmit = async event => {
       });
       return;
     }
+    loader.style.display = 'inline-block';
 
     page = 1; // відкриємо 1 сторінку при кожному пошуку
 
-    loadMoreBtn.classList.add('hidden'); //сховаємо кнопку Load More
+    loadMoreBtn.classList.add('is-hidden'); //сховаємо кнопку Load More
 
-    // //Видалимо клас is-hidden для показу індикатора завантаження
-    // loader.classList.remove('is-hidden');
-
-    //Зробили запит поключовому слову searchedQuery
+    //Зробили запит по ключовому слову searchedQuery
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
 
-    //перевірка на неіснуюче слово в інпуті
     //Якщо на сервері немає зображень за таким пошуком, відображається сповіщення про помилку.
-    if (data.hits.length === 0) {
-      iziToast.error({
+    if (!data.hits || data.hits.length === 0) {
+      iziToast.show({
         title: '',
         messageColor: 'Purple',
         color: 'red',
@@ -69,9 +62,6 @@ const onSearchFormSubmit = async event => {
         messageSize: '20',
         message: 'Sorry, there are no images. Please try again!',
       });
-
-      // galleryEl.innerHTML = ''; //почистили галерею
-      // searchFormEl.reset(); //почистили імпут
       return;
     }
 
@@ -88,19 +78,21 @@ const onSearchFormSubmit = async event => {
 
     gallerySimpleLightbox.refresh(); //оновлюємо галерею SimpleLightbox
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   } finally {
-    loader.style.display = 'none'; //ховаємо лоадер
+    loader.style.display = 'none';
+    if (event && event.target) {
+      event.target.reset();
+    }
   }
-  //очистимо форму після завершення запиту
-  event.target.reset();
 };
 
 // Додаємо обробник події на форму пошуку
-searchFormEl.addEventListener('submit', onSearchFormSubmit);
+searchFormEl.addEventListener('submit', searchFormImg);
 
 // опишемо ф-ію обробника кліка
-const onLoadMoreBtnClick = async () => {
+const onLoadMoreBtnClick = async event => {
+  event.preventDefault();
   try {
     page++;
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
@@ -112,7 +104,7 @@ const onLoadMoreBtnClick = async () => {
     );
 
     //коли настає кінець колекції
-    if (page * 15 >= data.totalHits || data.hits.length === 0) {
+    if (!data.hits || page * 15 >= data.totalHits || data.hits.length === 0) {
       iziToast.info({
         title: 'Info',
         messageColor: 'teal',
@@ -122,16 +114,17 @@ const onLoadMoreBtnClick = async () => {
         message: "We're sorry, but you've reached the end of search results.",
       });
 
-      buttonLoadEl.classList.add('is-hidden'); // ховаємо кнопку
+      loadMoreBtn.classList.add('is-hidden'); // ховаємо кнопку
       return;
     }
+    gallerySimpleLightbox.refresh(); // Оновлюємо SimpleLightbox  на нових сторінках
 
     //реалізуєио плавний скрол на 2 карточки
     const smoothScroll = document.querySelector('.gallery-item');
     if (smoothScroll) {
       const cardHeight = smoothScroll.getBoundingClientRect().height;
       window.scrollBy({
-        top: cardHeight * 2,
+        top: cardHeight * 2 + 600,
         behavior: 'smooth',
       });
     }

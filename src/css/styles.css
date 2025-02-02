@@ -127,9 +127,9 @@ img {
   background-color: #f5f3ed;
   font-size: 18px;
   flex-grow: 1;
-  height: 40px;
+  height: 44px;
   padding-left: 15px;
-  border: 1px solid #000000;
+  border: 2px solid #096357;
   border-radius: 6px;
 }
 button {
@@ -141,11 +141,11 @@ button {
   /* text-transform: uppercase; */
   cursor: pointer;
   margin-left: 5px;
-  transition: background-color 0.4s ease, transform 0.8s ease;
+  transition: background-color 0.3s ease, transform 0.4s ease;
 }
 button:hover {
   background-color: rgb(100, 170, 170);
-  transform: translateX(+3px);
+  transform: translateX(+4px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.445);
 }
 
@@ -169,6 +169,6 @@ button:hover {
   color: rgb(255, 255, 255);
   transform: translateY(-3px);
 }
-.load-more-btn.hidden {
+.load-more-btn.is-hidden {
   display: none;
 }
