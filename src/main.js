@@ -43,7 +43,6 @@ const searchFormImg = async event => {
       });
       return;
     }
-    loader.style.display = 'inline-block';
 
     page = 1; // відкриємо 1 сторінку при кожному пошуку
 
@@ -77,10 +76,16 @@ const searchFormImg = async event => {
     }
 
     gallerySimpleLightbox.refresh(); //оновлюємо галерею SimpleLightbox
+    // показує к-сть знайдених картинок
+    iziToast.success({
+      title: 'Success',
+      position: 'topRight',
+      messageSize: '20',
+      message: `Found ${data.totalHits} images!`,
+    });
   } catch (error) {
     console.error(error.message);
   } finally {
-    loader.style.display = 'none';
     if (event && event.target) {
       event.target.reset();
     }
